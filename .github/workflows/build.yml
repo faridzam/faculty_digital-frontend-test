@@ -1,0 +1,69 @@
+name: Docker Image CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v4
+
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        envkey_VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
+        envkey_VITE_BASE_WS_URL: ${{ secrets.VITE_BASE_WS_URL }}
+        file_name: .env
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: faridzam/faculty_digital-frontend-test
+
+    - name: Build and push Docker image
+      id: push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+    - name: Pull and run docker image
+      id: deploy
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        passphrase: ${{secrets.SSH_PASSPHRASE}}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          docker pull faridzam/faculty_digital-frontend-test:master
+          docker stop faculty_digital-frontend-test
+          docker rm faculty_digital-frontend-test
+          docker container run -d \
+          --restart always \
+          --name faculty_digital-frontend-test \
+          -p 3004:3004 \
+          -e VITE_BASE_API_URL=${{secrets.VITE_BASE_API_URL}} \
+          -e VITE_BASE_API_URL=${{secrets.VITE_BASE_API_URL}} \
+          faridzam/faculty_digital-frontend-test:master
