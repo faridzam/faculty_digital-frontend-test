@@ -1,14 +1,19 @@
 import { createPinia } from 'pinia';
-import piniaPersist from 'pinia-plugin-persist';
 import { createApp, markRaw } from 'vue';
+import { Router } from 'vue-router';
 import App from './App.vue';
 import router from './core/router';
 import './style.css';
 
+declare module 'pinia' {
+  export interface PiniaCustomProperties {
+    router: Router;
+  }
+}
+
 const pinia = createPinia();
-pinia.use(piniaPersist)
 pinia.use(({store}) => {
-  store.$router = markRaw(router)
+  store.router = markRaw(router)
 })
 
 const app = createApp(App)

@@ -25,7 +25,7 @@ export const useLoginStore = defineStore("login", {
         })
 
         if (response.status === 200) {
-          this.$router.replace('/dashboard')
+          this.router.replace('/dashboard')
         }
       } catch (error) {
         console.log("Login error: ", error)
