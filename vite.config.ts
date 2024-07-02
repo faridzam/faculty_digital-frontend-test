@@ -12,6 +12,16 @@ export default defineConfig({
       enforce: 'pre',
     }
   ],
+  preview: {
+    port: 3004,
+    strictPort: true
+  },
+  server: {
+    port: 3004,
+    strictPort: true,
+    host: true,
+    origin: "http://localhost:3004",
+  },
   resolve: {
     alias: [
       {find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url))}
