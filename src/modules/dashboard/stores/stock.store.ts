@@ -33,12 +33,13 @@ function groupStocks(stocks: IStock[]): IGroupedStock[] {
         id: stock.id,
         code: stock.code,
         name: stock.name,
+        price_leap: stock.price_leap,
+        initial_price: stock.initial_price,
         data: []
       };
     }
 
     acc[stock.id].data.push({
-      initial_price: stock.initial_price,
       current_price: stock.current_price,
       time: stock.time
     });

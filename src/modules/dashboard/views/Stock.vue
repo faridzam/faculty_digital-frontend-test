@@ -37,10 +37,7 @@ ChartJS.register(
   const {getGroupedStock, selected} = storeToRefs(useStockStore())
   const {addStock, setSelected} = useStockStore()
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-  }
+  const options = ref()
   const data = ref<ChartData<'line'>>({
     datasets: []
   })
@@ -63,6 +60,19 @@ ChartJS.register(
             }
           ],
         }
+        options.value = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              min: getGroupedStock.value.find((stock) => stock.id === selected.value)!.initial_price - getGroupedStock.value.find((stock) => stock.id === selected.value)!.price_leap*10,
+              max: getGroupedStock.value.find((stock) => stock.id === selected.value)!.initial_price + getGroupedStock.value.find((stock) => stock.id === selected.value)!.price_leap*10,
+              ticks: {
+                stepSize: getGroupedStock.value.find((stock) => stock.id === selected.value)!.price_leap
+              }
+            },
+          }
+        }
       }
     }
   })
@@ -81,7 +91,7 @@ ChartJS.register(
         </div>
       </RowContainer>
       <div class="chart-container">
-        <Line :data="data" :options="options" />
+        <Line :data="data" :options="options" updateMode="none"/>
       </div>
     </ColumnContainer>
   </Layout>
@@ -89,6 +99,7 @@ ChartJS.register(
 
 <style scoped lang="stylus">
   .chart-container{
-    width : 100%
+    width : 100%;
+    height: 100%;
   }
 </style>
