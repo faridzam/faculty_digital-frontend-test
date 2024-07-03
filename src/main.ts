@@ -10,7 +10,6 @@ declare module 'pinia' {
     router: Router;
   }
 }
-
 const pinia = createPinia();
 pinia.use(({store}) => {
   store.router = markRaw(router)

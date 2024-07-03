@@ -39,20 +39,6 @@ class HttpRequest {
         return res
       },
       async error => {
-        // const {setToken} = useAuthStore()
-        if (
-          error.config?.url !== '/auth/check' &&
-          error.config?.url !== '/auth/login' &&
-          error.response?.status === 401
-        ) {
-          // setToken(null)
-        } else if (
-          error.config?.url !== '/auth/check' &&
-          error.response?.status === 401
-        ) {
-          // setToken(null)
-        }
-
         return Promise.reject(error)
       }
     )
