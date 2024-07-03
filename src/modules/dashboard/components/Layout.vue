@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import Button from '@/core/components/button/Button.vue';
 import Typography from '@/core/components/text/Typography.vue';
+import { logout } from '@/core/utils/auth';
 
-  </script>
+</script>
 
 <template>
   <div class="layout-container">
+    <div class="logout-button">
+      <Button variant="contained" :onClick="logout" rounded>
+        <Typography variant="button2">logout</Typography>
+      </Button>
+    </div>
     <div class="sidebar">
       <a class="active">
         <Typography variant="body1">Dashboard</Typography>
@@ -20,6 +27,12 @@ import Typography from '@/core/components/text/Typography.vue';
   .layout-container{
     height: 100%;
     width: 100%;
+  }
+  .logout-button{
+    position: fixed;
+    z-index : 999;
+    right: 32px;
+    top: 32px
   }
   .sidebar {
   margin: 0;
@@ -39,7 +52,7 @@ import Typography from '@/core/components/text/Typography.vue';
 }
  
 .sidebar a.active {
-  background-color: $c-green-main;
+  background-color: $c-orange-main;
   color: white;
 }
 

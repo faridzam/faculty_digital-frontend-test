@@ -13,3 +13,14 @@ export async function checkAuth() {
     return false
   }
 }
+
+export async function logout() {
+  try {
+    const response = await apiRequest.get('/auth/logout')
+    if (response.status === 200) {
+      window.location.replace('/login')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
