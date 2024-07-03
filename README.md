@@ -1,5 +1,7 @@
-# Vue 3 + TypeScript + Vite
+how to run :
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+- run "npm install"
+- rename .env.example to .env and modify the api and websocket url
+- run "npm run dev" for development
+- run "npm run build" to build
+- run "npm run preview" to run the web
