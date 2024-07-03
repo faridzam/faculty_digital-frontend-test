@@ -46,8 +46,9 @@ const {
         variant="contained"
         rounded
         :onClick="submitLogin"
+        :disabled="getLoginState.loading"
       >
-        <Typography variant="button1" :color="COLORS_CLASS_CONSTANTS.whiteMain">sign in</Typography>
+        <Typography variant="button1" :color="COLORS_CLASS_CONSTANTS.whiteMain">{{ getLoginState.loading ? "loading..." : "sign in" }}</Typography>
       </Button>
     </AuthCard>
   </div>

@@ -9,6 +9,7 @@ import Layout from '../components/Layout.vue';
 import StockCard from '../components/StockCard.vue';
 import { useStockStore } from '../stores/stock.store';
 
+import Typography from '@/core/components/text/Typography.vue';
 import { COLORS_CONSTANTS } from '@/core/constants/colors';
 import {
   CategoryScale,
@@ -84,7 +85,7 @@ ChartJS.register(
 
 <template>
   <Layout>
-    <ColumnContainer alignItems="center" justifyContent="center" style="padding: 32px;">
+    <ColumnContainer v-if="getGroupedStock.length > 0" alignItems="center" justifyContent="center" style="padding: 32px;">
       <RowContainer style="gap: 16px;">
         <div v-for="(stock) in getGroupedStock" :key="`stock__${stock.id}`">
           <StockCard :data="stock" :onClick="(id) => setSelected(id)" :selected="stock.id === selected" />
@@ -94,12 +95,13 @@ ChartJS.register(
         <Line :data="data" :options="options" updateMode="none"/>
       </div>
     </ColumnContainer>
+    <Typography v-if="getGroupedStock.length < 1" variant="subtitle">Loading...</Typography>
   </Layout>
 </template>
 
 <style scoped lang="stylus">
   .chart-container{
     width : 100%;
-    height: 100%;
+    height: 500px;
   }
 </style>

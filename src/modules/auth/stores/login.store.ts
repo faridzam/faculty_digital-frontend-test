@@ -5,6 +5,7 @@ import { ILoginState } from "../models/login";
 export const useLoginStore = defineStore("login", {
 
   state: () : ILoginState => ({
+    loading: false,
     username: "",
     password: ""
   }),
@@ -19,6 +20,7 @@ export const useLoginStore = defineStore("login", {
     },
     async submitLogin(){
       try {
+        this.$state.loading = true;
         const response = await apiRequest.post('/auth/login', {
           username: this.username,
           password: this.password,
@@ -29,6 +31,8 @@ export const useLoginStore = defineStore("login", {
         }
       } catch (error) {
         console.log("Login error: ", error)
+      } finally {
+        this.$state.loading = false;
       }
     }
   },
